@@ -2,14 +2,66 @@
 <html lang="ja">
 
 <head>
-	<meta charset="UTF-8">
-	<title>新しい放置ゲーム(1).file</title>
-	<link rel="stylesheet" href="stylesheet.css">
+  <meta charset="UTF-8">
+  <title>ケーキタイピングゲームbeta</title>
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 
 <body>
- <div id="app">
-		<p>hello</p>
-	</div>
+  <div id="app">
+    <div class="container" v-cloak>
+      <div id="myText">{{ player.word }}</div>
+      <div id="coinamount">ケーキ: {{ player.money.toExponential(3) }}</div>
+      <div class="tabs">
+        <span id="basic">
+          <button type="button" :class="{ 'selected': currenttab === 'basic' }"
+            @click="changeTab('basic')">ケーキ生産</button>
+        </span>
+        <span id="option">
+          <button type="button" :class="{ 'selected': currenttab === 'option' }"
+            @click="changeTab('option')">設定</button>
+        </span>
+      </div>
+      <div class="basictabcontents" v-show="currenttab == 'basic'">
+        <div class="levelrcontents" v-if="player.levelresettime.gt(0)">
+          世界征服回数: {{ player.levelresettime }}回
+        </div>
+        <div class="softreset">
+          <div id="levelreset" v-if="player.money.greaterThanOrEqualTo('1e10')">
+            <button type="button" @click="resetLevel">昇段リセット</button>
+          </div>
+        </div>
+        <div class="generators-container">
+          <div class="generator" v-for="i in 4" :key="i">
+            <span class="name">
+              {{ globedata.generatorName[i-1] }}
+            </span>
+            <span class="generator_info">
+              : {{ player.generators[i-1].toExponential(3) }}
+            </span>
+            <button type="button" class="gbutton"
+              :class="{ 'unavailable': player.money.lt(player.generatorsCost[i-1]) }" @click="buyGenerator(i-1)">
+              購入 コスト: {{ player.generatorsCost[i-1].toExponential(1) }}
+            </button>
+            <span>
+              購入数: {{ player.generatorsBought[i-1].toNumber() }}　
+            </span>
+            <span>
+              {{globedata.generatorinfo[i-1]}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="optiontabcontents" v-show="currenttab == 'option'">
+        <button type="button" id="resetbutton" @click="resetData(false)">リセット</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@next"></script>
+  <script type="text/javascript" src="break_infinity.js"></script>
+  <script type="text/javascript" src="typeword.js"></script>
+  <script type="text/javascript" src="game.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
+
 </html>

@@ -2,6 +2,11 @@
     text-align: center;
     font-size: 48px
   }
+
+  #myText{
+    text-align: center;
+    font-size: 48px
+  }
   
   #darkcoinamount{
     text-align: center;
@@ -22,6 +27,18 @@
   td{
     width:24px;
     height:24px;
+  }
+
+  .name{
+    display: inline-block;
+    width: 150px; /* adjust the width as needed */
+    text-align: left;
+  }
+
+  .generator_info{
+    display: inline-block;
+    width: 140px; /* adjust the width as needed */
+    text-align: right;
   }
   
   .generator{
