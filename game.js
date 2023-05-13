@@ -1,4 +1,4 @@
-const version = 2;
+const version = 1;
 
 
 
@@ -27,10 +27,10 @@ Vue.createApp({
     return {
       globedata : {
         generatorsCostIncrease: [
+          new Decimal(2),
           new Decimal(4),
           new Decimal(8),
           new Decimal(16),
-          new Decimal(32),
         ],
         generatorName : [
           'パティシエ',
@@ -58,7 +58,7 @@ Vue.createApp({
           new Decimal(1),
           new Decimal('1e3'),
           new Decimal('1e5'),
-          new Decimal('1e8'),
+          new Decimal('1e7'),
         ],
 
 
@@ -209,7 +209,7 @@ function readOldFormat(saveData) {
       new Decimal(1),
       new Decimal('1e3'),
       new Decimal('1e5'),
-      new Decimal('1e8'),
+      new Decimal('1e7'),
     ],
 
     saveversion: version
