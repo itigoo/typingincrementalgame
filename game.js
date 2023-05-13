@@ -1,4 +1,4 @@
-const version = 1;
+const version = 4;
 
 
 
@@ -9,6 +9,7 @@ const initialData = () => {
     levelresettime: new Decimal(0),
     word : 'hello',
     digit: 0,
+    boost: 0,
 
     generators: new Array(4).fill(null).map(() => new Decimal(0)),
     generatorsBought: new Array(4).fill(null).map(() => new Decimal(0)),
@@ -18,6 +19,7 @@ const initialData = () => {
       new Decimal('1e5'),
       new Decimal('1e7'),
     ],
+    booster : 0,
     saveversion: version
   }
 }
@@ -51,6 +53,7 @@ Vue.createApp({
         levelresettime: new Decimal(0),
         word : 'hello',
         digit: 0,
+        boost: 0,
 
         generators: new Array(4).fill(null).map(() => new Decimal(0)),
         generatorsBought: new Array(4).fill(null).map(() => new Decimal(0)),
@@ -60,6 +63,7 @@ Vue.createApp({
           new Decimal('1e5'),
           new Decimal('1e7'),
         ],
+        booster : 0,
 
 
         saveversion: version,
@@ -73,12 +77,14 @@ Vue.createApp({
     update(e) {
       if (e.key == this.player.word[this.player.digit]){
         this.player.digit++;
+        this.player.boost++;
         if (this.player.digit == this.player.word.length){
           const randomNumber = Math.floor(Math.random() * words.length);
           this.player.word = words[randomNumber];
           this.player.digit = 0;
         }
       } else {
+        this.player.boost=0;
         return;
       }
       const myText = document.getElementById("myText");
@@ -86,17 +92,24 @@ Vue.createApp({
       const grayText = this.player.word.slice(this.player.digit);
       myText.innerHTML =  "</span>" + blackText + "<span style='color: gray'>" + grayText;
 
+      base_mul = new Decimal(1);
+      if (this.player.booster == 1) base_mul = base_mul.mul(1+Math.min(1,this.player.boost/30));
+
       //generator 0
       let mult = new Decimal(this.player.generatorsBought[0]);
+      mult = mult.mul(base_mul);
       this.player.money = this.player.money.add(this.player.generators[0].mul(mult));
       //generator 1
       mult = new Decimal(this.player.generatorsBought[1].mul(100));
+      mult = mult.mul(base_mul);
       this.player.money = this.player.money.add(this.player.generators[1].mul(mult));
       //generator 1
       mult = new Decimal(this.player.generatorsBought[2]);
+      mult = mult.mul(base_mul);
       this.player.generators[0] = this.player.generators[0].add(this.player.generators[2].mul(mult));
       //generator 1
       mult = new Decimal(this.player.generatorsBought[3]);
+      mult = mult.mul(base_mul);
       this.player.generators[1] = this.player.generators[1].add(this.player.generators[3].mul(mult));
 
 
@@ -125,6 +138,8 @@ Vue.createApp({
           levelresettime: new Decimal(saveData.levelresettime),
           word : saveData.word,
           digit: 0,
+          boost: saveData.boost,
+          booster : saveData.booster,
 
           
           generators: saveData.generators.map(v => new Decimal(v)),
@@ -146,10 +161,10 @@ Vue.createApp({
         this.player.generatorsCost[index] = this.player.generatorsCost[index].mul(this.globedata.generatorsCostIncrease[index])
       }
     },
-    changeMode(index) {
-      this.player.generatorsMode[index] += 1;
-      if (this.player.generatorsMode[index] > index) {
-        this.player.generatorsMode[index] = 0;
+    buyAccelerator(index) {
+      if (this.player.money.greaterThanOrEqualTo(100000000) && this.player.booster==0) {
+        this.player.money = this.player.money.sub(100000000)
+        this.player.booster=1;
       }
     },
     resetData(force) {
@@ -192,6 +207,7 @@ function readOldFormat(saveData) {
     levelresettime: new Decimal(saveData.levelresettime),
     word : saveData.word ?? 'hello',
     digit: 0,
+    boost: saveData.boost ?? 0,
 
     generators: [
       new Decimal(saveData.generator1 ?? 0),
@@ -211,6 +227,7 @@ function readOldFormat(saveData) {
       new Decimal('1e5'),
       new Decimal('1e7'),
     ],
+    booster : saveData.booster ?? 0,
 
     saveversion: version
   }

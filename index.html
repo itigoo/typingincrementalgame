@@ -12,6 +12,7 @@
     <div class="container" v-cloak>
       <div id="myText">{{ player.word }}</div>
       <div id="coinamount">ケーキ: {{ player.money.toExponential(3) }}</div>
+      <div id="tickspeed">ブースト効果: {{ player.booster==1 ? (1+Math.min(1,player.boost/30)).toFixed(3) : (1).toFixed(3) }} 倍</div>
       <div class="tabs">
         <span id="basic">
           <button type="button" :class="{ 'selected': currenttab === 'basic' }"
@@ -28,7 +29,7 @@
         </div>
         <div class="softreset">
           <div id="levelreset" v-if="player.money.greaterThanOrEqualTo('1e10')">
-            <button type="button" @click="resetLevel">昇段リセット</button>
+            <button type="button" @click="resetLevel">世界征服</button>
           </div>
         </div>
         <div class="generators-container">
@@ -51,6 +52,16 @@
             </span>
           </div>
         </div>
+        <div class="accelerators-container">
+					<div>
+						<div class="accelerator">ブースター:
+              <button type="button" class="abutton" :class="{ 'unavailable': player.money.lt(100000000)}" @click="buyAccelerator(0)">
+                購入 コスト: 1e8
+              </button>
+              <span> {{ player.booster==0 ? '未購入' : '購入済み' }} </span>
+            </div>
+					</div>
+				</div>
       </div>
       <div class="optiontabcontents" v-show="currenttab == 'option'">
         <button type="button" id="resetbutton" @click="resetData(false)">リセット</button>
