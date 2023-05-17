@@ -1,0 +1,3 @@
+# typingincrementalgame
+タイピングをすることによってケーキを増やし、生産施設を強化するincrementalgameです
+ケーキを10000000000個貯めて世界征服をしましょう！
