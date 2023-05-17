@@ -10,8 +10,9 @@
 <body>
   <div id="app">
     <div class="container" v-cloak>
+      <div id="time_count" v-show="player.challenge_type == 1">{{player.time_count.toFixed(1)}}</div>
       <div id="myText">{{ player.word }}</div>
-      <div id="coinamount">ケーキ: {{ player.money.toExponential(3) }}</div>
+      <div id="coinamount">ケーキ: {{ player.money >= 1000000 ? player.money.toExponential(3) : player.money.toFixed(0) }}</div>
       <div id="tickspeed">ブースト効果: {{ player.booster==1 ? (1+Math.min(1,player.boost/30)).toFixed(3) : (1).toFixed(3) }} 倍</div>
       <div class="tabs">
         <span id="basic">
@@ -22,18 +23,22 @@
           <button type="button" :class="{ 'selected': currenttab === 'option' }"
             @click="changeTab('option')">設定</button>
         </span>
+        <span id="shop"  v-if="player.levelresettime.gt(0)">
+          <button type="button" :class="{ 'selected': currenttab === 'challenge' }"
+            @click="changeTab('challenge')">挑戦</button>
+        </span>
       </div>
       <div class="basictabcontents" v-show="currenttab == 'basic'">
         <div class="levelrcontents" v-if="player.levelresettime.gt(0)">
-          世界征服回数: {{ player.levelresettime }}回
+          制服世界: {{ player.levelresettime >= 1000 ? player.levelresettime.toExponential(3) : player.levelresettime.toFixed(0) }}　最大ケーキ数: {{  player.level >= 1000 ? player.level.toExponential(3) : player.level.toFixed(0)  }}
         </div>
         <div class="softreset">
           <div id="levelreset" v-if="player.money.greaterThanOrEqualTo('1e10')">
-            <button type="button" @click="resetLevel">世界征服</button>
+            <button type="button" @click="resetLevel(false)">世界征服</button>
           </div>
         </div>
         <div class="generators-container">
-          <div class="generator" v-for="i in 4" :key="i">
+          <div class="generator" v-for="i in 5" :key="i">
             <span class="name">
               {{ globedata.generatorName[i-1] }}
             </span>
@@ -65,6 +70,40 @@
       </div>
       <div class="optiontabcontents" v-show="currenttab == 'option'">
         <button type="button" id="resetbutton" @click="resetData(false)">リセット</button>
+      </div>
+      <div class="optiontabcontents" v-show="currenttab == 'challenge'">
+        <span>
+          勲章: {{ player.challenge_point }}
+        </span>
+        <br>
+        <span>
+          挑戦とは厳しい条件で世界征服を目指すことです。
+          挑戦に成功することで「勲章」を獲得でき、すべての生産機の生産量を(1+{勲章数})倍にできます。
+        </span>
+        <div class="challenge-container">
+          <br>
+          <span>タイムアッタク系：一度も世界征服してない初期状態の条件でタイムアタックをします</span>
+          <div class="challenge" v-for="i in 4" :key="i">
+            <button type="button" class="challengeconfigbutton" :class="{ 'selected': player.challenge_num == (i) && player.challenge_type==1 }" @click="startchallenge(i-1)">
+              タイムアタック {{ i }}
+            </button>
+            <span> {{ (player.challenges1 >> i-1 )%2==0 ? '未達成' : '達成済み' }} </span>
+            <span>
+              　{{globedata.challenge1info[i-1]}}
+            </span>
+          </div>
+          <br>
+          <span>ロングラン系：より多くのケーキを生産してからしか世界征服ができなくなります</span>
+          <div class="challenge" v-for="i in 3" :key="i">
+            <button type="button" class="challengeconfigbutton" :class="{ 'selected': player.challenge_num == (i) && player.challenge_type==2 }" @click="startchallenge(100+i-1)">
+              ロングラン {{ i }}
+            </button>
+            <span> {{ (player.challenges2 >> i-1 )%2==0 ? '未達成' : '達成済み' }} </span>
+            <span>
+              　{{globedata.challenge2info[i-1]}}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

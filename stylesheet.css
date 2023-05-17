@@ -7,6 +7,12 @@
     text-align: center;
     font-size: 48px
   }
+
+  #time_count{
+    position: absolute;
+    text-align: left;
+    font-size: 48px
+  }
   
   #darkcoinamount{
     text-align: center;
