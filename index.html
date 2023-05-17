@@ -10,7 +10,7 @@
 <body>
   <div id="app">
     <div class="container" v-cloak>
-      <div id="time_count" v-show="player.challenge_type == 1">{{player.time_count.toFixed(1)}}</div>
+      <div id="time_count" v-show="player.challenge_type == 1">{{player.time_count}}</div>
       <div id="myText">{{ player.word }}</div>
       <div id="coinamount">ケーキ: {{ player.money >= 1000000 ? player.money.toExponential(3) : player.money.toFixed(0) }}</div>
       <div id="tickspeed">ブースト効果: {{ player.booster==1 ? (1+Math.min(1,player.boost/30)).toFixed(3) : (1).toFixed(3) }} 倍</div>
@@ -30,7 +30,7 @@
       </div>
       <div class="basictabcontents" v-show="currenttab == 'basic'">
         <div class="levelrcontents" v-if="player.levelresettime.gt(0)">
-          制服世界: {{ player.levelresettime >= 1000 ? player.levelresettime.toExponential(3) : player.levelresettime.toFixed(0) }}　最大ケーキ数: {{  player.level >= 1000 ? player.level.toExponential(3) : player.level.toFixed(0)  }}
+          征服世界: {{ player.levelresettime >= 1000 ? player.levelresettime.toExponential(3) : player.levelresettime.toFixed(0) }}　最大ケーキ数: {{  player.level >= 1000 ? player.level.toExponential(3) : player.level.toFixed(0)  }}
         </div>
         <div class="softreset">
           <div id="levelreset" v-if="player.money.greaterThanOrEqualTo('1e10')">
@@ -82,7 +82,7 @@
         </span>
         <div class="challenge-container">
           <br>
-          <span>タイムアッタク系：一度も世界征服してない初期状態の条件でタイムアタックをします</span>
+          <span>タイムアタック系：一度も世界征服してない初期状態の条件でタイムアタックをします</span>
           <div class="challenge" v-for="i in 4" :key="i">
             <button type="button" class="challengeconfigbutton" :class="{ 'selected': player.challenge_num == (i) && player.challenge_type==1 }" @click="startchallenge(i-1)">
               タイムアタック {{ i }}

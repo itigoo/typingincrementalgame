@@ -189,7 +189,7 @@ Vue.createApp({
           this.player.challenge_type = 0;
           this.player.challenge_num = 0;
         }
-        if (this.player.challenge_num==3 && this.player.time_count>=600){
+        if (this.player.challenge_num==4 && this.player.time_count>=600){
           confirm('チャレンジ失敗しました');
           this.player.challenge_type = 0;
           this.player.challenge_num = 0;
