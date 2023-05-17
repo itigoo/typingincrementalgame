@@ -248,11 +248,10 @@ Vue.createApp({
       }
     },
     resetLevel(force) {
-      if (!force && this.player.challenge_type==2 && this.player.money<=Decimal.pow(10,this.player.challenge_num*5+10)){
+      if (!force && this.player.challenge_type==2 && !this.player.money.greaterThanOrEqualTo(new Decimal(10).pow(this.player.challenge_num*5+10))){
         confirm('ロングラン中のため世界征服できません');
         return ;
       }
-      console.log(Decimal.pow(10,this.challenge_num*5+10));
       if (force || confirm('ケーキで世界征服をしますか？')) {
         let nextlevelresettime = this.player.levelresettime;
         let nextlevel = this.player.level;
