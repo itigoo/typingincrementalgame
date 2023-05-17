@@ -10,9 +10,9 @@
 <body>
   <div id="app">
     <div class="container" v-cloak>
-      <!-- <div id="time_count" v-show="player.challenge_type == 1">{{player.time_count.toFixed(1)}}</div> -->
+      <div id="time_count" v-show="player.challenge_type == 1">{{player.time_count.toFixed(1)}}</div>
       <div id="myText">{{ player.word }}</div>
-      <!-- <div id="coinamount">ケーキ: {{ player.money >= 1000000 ? player.money.toExponential(3) : player.money.toFixed(0) }}</div> -->
+      <div id="coinamount">ケーキ: {{ player.money >= 1000000 ? player.money.toExponential(3) : player.money.toFixed(0) }}</div>
       <div id="tickspeed">ブースト効果: {{ player.booster==1 ? (1+Math.min(1,player.boost/30)).toFixed(3) : (1).toFixed(3) }} 倍</div>
       <div class="tabs">
         <span id="basic">
