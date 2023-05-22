@@ -271,7 +271,7 @@ Vue.createApp({
             challenge_point++;
             challenges1+=(1 << challenge_num-1);
           }
-          if (challenge_type==2 && (challenges3 >> challenge_num-1)%2==0) {
+          if (challenge_type==2 && (challenges2 >> challenge_num-1)%2==0) {
             challenge_point++;
             challenges2+=(1 << challenge_num-1);
           }
