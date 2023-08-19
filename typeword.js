@@ -757,6 +757,7 @@ const words = [
 "idea",
 "identify",
 "idle",
+"idol",
 "ignore",
 "ill",
 "illegal",
