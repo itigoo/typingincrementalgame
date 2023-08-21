@@ -2,7 +2,6 @@ const words = [
   "about",
   "above",
   "acorn",
-  "actor",
   "admit",
   "after",
   "agent",
